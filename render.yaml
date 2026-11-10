@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: predictive-cybercrime-demo
+    runtime: python
+    plan: free
+    region: singapore
+    buildCommand: pip install -r backend/requirements.txt && npm install --prefix frontend && npm run build --prefix frontend
+    startCommand: gunicorn --chdir backend app:app --bind 0.0.0.0:$PORT --workers 1
+    healthCheckPath: /api/health
+    envVars:
+      - key: JWT_SECRET
+        generateValue: true
